@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class StoreProductRequest extends FormRequest
 {
@@ -28,7 +29,7 @@ class StoreProductRequest extends FormRequest
             "amount" => ["required", "integer", "min:1"],
             "price" => ["required", "numeric", "regex:/^\d+(\.\d{1,2})?$/"],
             "discount" => ["required", "min:0", "max:100"],
-            "image" => "required",
+            "image" => ["required", File::image()->max(12 * 1024)],
             "description" => "required",
             "category_id" => ["required", "integer", "exists:App\Models\Category,id"],
         ];

@@ -35,7 +35,18 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request): JsonResponse
     {
-        $product = Product::create($request->all());
+        // generate random name for the image
+        $random = rand(0, 100000);
+        $imageName = "Image" . date('ymd') . $random .'.'.$request->image->extension();
+
+        // store the image in storage folder storage/app/public/products/images
+        $request->image->storeAs("public/products/images", $imageName);
+
+        // override the new name of image to request before storing in database
+        $product_array = $request->all();
+        $product_array["image"] = $imageName;
+
+        $product = Product::create($product_array);
 
         return response()->json([
             "status" => "success",
