@@ -8,9 +8,15 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Product::class, 'product');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +51,9 @@ class ProductController extends Controller
         // override the new name of image to request before storing in database
         $product_array = $request->all();
         $product_array["image"] = $imageName;
+        $product_array["user_id"] = Auth::user()->id;
+
+//        dd($product_array);
 
         $product = Product::create($product_array);
 

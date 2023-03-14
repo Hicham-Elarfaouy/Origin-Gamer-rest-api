@@ -17,6 +17,7 @@ class Product extends Model
         'image',
         'description',
         'category_id',
+        'user_id',
     ];
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
