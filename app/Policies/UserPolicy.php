@@ -9,6 +9,16 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    public function update_password(User $user)
+    {
+        return true;
+    }
+
+    public function update_role(User $user, User $model)
+    {
+        return $user->role_id == 1 && $user->id != $model->id;
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -50,7 +60,7 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
         return true;
     }
@@ -62,9 +72,9 @@ class UserPolicy
      * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user)
     {
-        //
+        return true;
     }
 
     /**

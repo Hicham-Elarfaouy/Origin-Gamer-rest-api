@@ -18,7 +18,6 @@ class ProductFactory extends Factory
     public function definition()
     {
         $category_ids = DB::table('categories')->pluck('id')->toArray();
-        $user_ids = DB::table('users')->pluck('id')->toArray();
 
         return [
             'title' => $this->faker->realText(50),
@@ -28,7 +27,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->realText(),
             'image' => 'Image.png',
             'category_id' => $this->faker->randomElement($category_ids),
-            'user_id' => $this->faker->randomElement($user_ids),
+            'user_id' => $this->faker->randomElement([1, 2]),
         ];
     }
 }

@@ -36,6 +36,7 @@ Route::controller(UserController::class)->prefix('user')->group(function (){
     Route::match(['put', 'patch'],"/update_pass", "update_password");
     Route::match(['put', 'patch'],"", "update");
     Route::delete("", "destroy");
+    Route::match(['put', 'patch'],"/update_role/{user}", "update_role");
 });
 
 Route::apiResource("category", CategoryController::class);

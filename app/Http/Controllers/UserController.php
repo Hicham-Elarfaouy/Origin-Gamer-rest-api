@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth:api");
+        $this->authorizeResource(User::class, 'user');
     }
 
     /**
@@ -47,6 +47,8 @@ class UserController extends Controller
      */
     public function update_password(Request $request): JsonResponse
     {
+        $this->authorize('update_password');
+
         $request->validate([
             'old_password' => ['required', 'min:8'],
             'password' => ['required', 'min:8', 'confirmed'],
@@ -83,6 +85,24 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully delete user',
+            'data' => $user,
+        ]);
+    }
+
+    public function update_role(Request $request, User $user)
+    {
+        $this->authorize('update_role', $user);
+
+        $request->validate([
+            'role_id' => ['required', 'integer', 'exists:App\Models\Role,id'],
+        ]);
+
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully update user role',
             'data' => $user,
         ]);
     }
