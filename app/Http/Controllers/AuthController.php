@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
+/**
+ * @OA\Tag(
+ *     name="Authentication",
+ *     description="API Endpoints of Auth Management"
+ * )
+ */
 class AuthController extends Controller
 {
     public function __construct()
@@ -16,6 +22,31 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['only' => ['logout', 'refresh']]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/login",
+     * operationId="AuthLogin",
+     * tags={"Authentication"},
+     * summary="Login",
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"email", "password"},
+     *               @OA\Property(property="email", type="email"),
+     *               @OA\Property(property="password", type="password")
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Login Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function login(Request $request): JsonResponse
     {
         $request->validate([
@@ -46,6 +77,32 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/register",
+     * operationId="AuthRegister",
+     * tags={"Authentication"},
+     * summary="Register",
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"name","email", "password"},
+     *               @OA\Property(property="name", type="text"),
+     *               @OA\Property(property="email", type="email"),
+     *               @OA\Property(property="password", type="password"),
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Register Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function register(Request $request): JsonResponse
     {
         $request->validate([
@@ -73,6 +130,20 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/logout",
+     * operationId="AuthLogout",
+     * tags={"Authentication"},
+     * summary="Logout",
+     *      security={ {"sanctum": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function logout(): JsonResponse
     {
         Auth::logout();
@@ -82,6 +153,20 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/refresh",
+     * operationId="AuthRefresh",
+     * tags={"Authentication"},
+     * summary="Refresh",
+     *      security={ {"sanctum": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function refresh(): JsonResponse
     {
         return response()->json([
@@ -94,6 +179,30 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/forgot",
+     * operationId="AuthForgot",
+     * tags={"Authentication"},
+     * summary="Forgot",
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"email"},
+     *               @OA\Property(property="email", type="email"),
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function forgot_password(Request $request): JsonResponse
     {
         $request->validate([

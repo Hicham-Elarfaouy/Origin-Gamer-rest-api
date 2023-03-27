@@ -9,6 +9,12 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @OA\Tag(
+ *     name="User",
+ *     description="API Endpoints of User Management"
+ * )
+ */
 class UserController extends Controller
 {
     public function __construct()
@@ -21,6 +27,33 @@ class UserController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Put(
+     * path="/api/user",
+     * operationId="UserUpdateInfo",
+     * tags={"User"},
+     * summary="Update information's",
+     *     security={ {"sanctum": {} }},
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"email", "name"},
+     *               @OA\Property(property="name", type="text"),
+     *               @OA\Property(property="email", type="email"),
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Login Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function update(Request $request): JsonResponse
     {
@@ -76,6 +109,21 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Delete(
+     * path="/api/user",
+     * operationId="UserDelete",
+     * tags={"User"},
+     * summary="Delete User",
+     *     security={ {"sanctum": {} }},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Login Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function destroy(): JsonResponse
     {

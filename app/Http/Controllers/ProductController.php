@@ -10,6 +10,12 @@ use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @OA\Tag(
+ *     name="Product",
+ *     description="API Endpoints of Product Management"
+ * )
+ */
 class ProductController extends Controller
 {
     public function __construct()
@@ -21,6 +27,20 @@ class ProductController extends Controller
      * Display a listing of the resource.
      *
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Get(
+     * path="/api/product",
+     * operationId="ProductIndex",
+     * tags={"Product"},
+     * summary="Get All Products",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function index(): JsonResponse
     {
@@ -38,6 +58,38 @@ class ProductController extends Controller
      *
      * @param StoreProductRequest $request
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Post(
+     * path="/api/product",
+     * operationId="ProductStore",
+     * tags={"Product"},
+     * summary="Store Product",
+     *     security={ {"sanctum": {} }},
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"title", "amount", "price", "discount", "image", "description", "category_id"},
+     *               @OA\Property(property="title", type="text"),
+     *               @OA\Property(property="amount", type="integer"),
+     *               @OA\Property(property="price", type="float"),
+     *               @OA\Property(property="discount", type="integer"),
+     *               @OA\Property(property="image", type="text"),
+     *               @OA\Property(property="description", type="text"),
+     *               @OA\Property(property="category_id", type="integer"),
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function store(StoreProductRequest $request): JsonResponse
     {
@@ -70,6 +122,29 @@ class ProductController extends Controller
      * @param Product $product
      * @return JsonResponse
      */
+
+    /**
+     * @OA\Get(
+     * path="/api/product/{id}",
+     * operationId="ProductShow",
+     * tags={"Product"},
+     * summary="Get Specific Product",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Product ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
+     */
     public function show(Product $product): JsonResponse
     {
         $product->category;
@@ -85,6 +160,47 @@ class ProductController extends Controller
      * @param UpdateProductRequest $request
      * @param Product $product
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Put(
+     * path="/api/product/{id}",
+     * operationId="ProductUpdate",
+     * tags={"Product"},
+     * summary="Update Product",
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Product ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *               type="object",
+     *               required={"title", "amount", "price", "discount", "image", "description", "category_id"},
+     *               @OA\Property(property="title", type="text"),
+     *               @OA\Property(property="amount", type="integer"),
+     *               @OA\Property(property="price", type="float"),
+     *               @OA\Property(property="discount", type="integer"),
+     *               @OA\Property(property="image", type="text"),
+     *               @OA\Property(property="description", type="text"),
+     *               @OA\Property(property="category_id", type="integer"),
+     *            ),
+     *        ),
+     *    ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
@@ -102,6 +218,30 @@ class ProductController extends Controller
      *
      * @param Product $product
      * @return JsonResponse
+     */
+
+    /**
+     * @OA\Delete(
+     * path="/api/product/{id}",
+     * operationId="ProductDelete",
+     * tags={"Product"},
+     * summary="Delete Specific Product",
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Product ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfully",
+     *          @OA\JsonContent()
+     *       ),
+     * )
      */
     public function destroy(Product $product): JsonResponse
     {
